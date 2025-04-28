@@ -32,17 +32,24 @@ public class AccountingLedgerApp {
             System.out.print("Make a selection: ");
             String userSelection = ledgerScanner.nextLine().trim(); //trims extra characters
 
-            //if statement for if the user wants to exit the application
+            //if statement based off what the user selects
             if (userSelection.equalsIgnoreCase("X")) {
                 System.out.println("You are now exiting the application, " +
                         "\nThank you for choosing Alondra's Prestigious Accounting Ledger Application. " +
                         "\nHave a wonderful day!");
                 appRunning = false;
+            } else if (userSelection.equalsIgnoreCase("D")) {
+                System.out.println("You want to make a deposit");
+                //addDeposit - need to make this a method when i prompt the user
+            } else if (userSelection.equalsIgnoreCase("P")) {
+                System.out.println("You want to make a payment");
+                //makePayment - need to make this a method when i prompt the user
+            } else if (userSelection.equalsIgnoreCase("L")) {
+                System.out.println("You want to open the ledger");
+                //openLedger - need to make this a method when i prompt the user
+            } else {
+                System.out.println("Invalid selection, please make a valid selection");
             }
-//            //else statement if they don't want to exit
-//            else {
-//
-//            }
             //ledger screen (all entries should show the newest entries first)
             //A) All: display all entries
             //D) Deposits: display only the entries that are deposits into the account
