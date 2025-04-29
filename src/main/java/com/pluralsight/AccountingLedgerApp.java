@@ -82,7 +82,7 @@ public class AccountingLedgerApp {
         }
     }
 
-//    //METHOD FOR HOME SCREEN
+    //METHOD FOR HOME SCREEN
 //    public static void homeScreen() {}
 
 //method for X) Exit
