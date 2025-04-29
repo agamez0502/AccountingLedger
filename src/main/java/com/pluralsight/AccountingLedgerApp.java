@@ -1,10 +1,14 @@
 package com.pluralsight;
 
+import java.io.BufferedWriter;
+import java.io.FileWriter;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Scanner;
 
-public class AccountingLedgerAppp {
+public class AccountingLedgerApp {
 
     //scanner allows user input
     static Scanner ledgerScanner = new Scanner(System.in);
@@ -44,39 +48,39 @@ public class AccountingLedgerAppp {
             }
         }
     }
-//    public static void writeToCSV(Transaction transaction) {
-//        try {
-//
-//          //create a file writer and set append to true so it adds to the file and not override its contents
-//          FileWriter csvFile = new FileWriter("src/main/resources/transactions.csv", true);
-//
-//        //create the buffered writer to write to file
-//        BufferedWriter bufWriter = new BufferedWriter(csvFile);
-//
-//        //create a date and time
-//        LocalDateTime time = LocalDateTime.now();
-//            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("hh:mm");
-//            String formatTime = time.format(formatter);
-//
-//
-//            bufWriter.write(transaction.getDate() + " | " +
-//                    transaction.getTime() + " | " +
-//                    transaction.getDescription() + " | " +
-//                    transaction.getVendor() + " | " +
-//                    transaction.getAmount());
-//
-//        //make sure we have a new line in our file
-//                bufWriter.newLine();
-//
-//        //close the buffered writer so it actually writes to the file
-//                bufWriter.close();
-//
-//            } catch (Exception e) {
-//
-//        //if we run into an issue writing to the file, display this instead
-//        System.out.println("Error writing to the file: " + e.getMessage());
-////        }
-}
+    public static void writeToCSV(Transaction transaction) {
+        try {
+
+            //create a file writer and set append to true so it adds to the file and not override its contents
+            FileWriter csvFile = new FileWriter("src/main/resources/transactions.csv", true);
+
+            //create the buffered writer to write to file
+            BufferedWriter bufWriter = new BufferedWriter(csvFile);
+
+            //create a date and time
+            LocalDateTime time = LocalDateTime.now();
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("hh:mm");
+            String formatTime = time.format(formatter);
+
+
+            bufWriter.write(transaction.getDate() + " | " +
+                    transaction.getTime() + " | " +
+                    transaction.getDescription() + " | " +
+                    transaction.getVendor() + " | " +
+                    transaction.getAmount());
+
+            //make sure we have a new line in our file
+            bufWriter.newLine();
+
+            //close the buffered writer so it actually writes to the file
+            bufWriter.close();
+
+        } catch (Exception e) {
+
+            //if we run into an issue writing to the file, display this instead
+            System.out.println("Error writing to the file: " + e.getMessage());
+        }
+    }
 
 //    //METHOD FOR HOME SCREEN
 //    public static void homeScreen() {}
@@ -131,6 +135,7 @@ public static void makePayment() {
     System.out.println("Payment has successfully been made!");
 }
 
+
 //method for L) Ledger Screen
 //public static void openLedger() {
 //
@@ -146,5 +151,4 @@ public static void makePayment() {
 //    //-5) Search By Vendor: prompt user for the vendor name and display all entries for that vendor
 //    //-0) Back: go back to Reports page
 //    //H) Home: go back to home screen
-//}
 }
