@@ -1,11 +1,15 @@
 package com.pluralsight;
 
+import java.io.BufferedReader;
 import java.io.BufferedWriter;
+import java.io.FileReader;
 import java.io.FileWriter;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
 
 public class AccountingLedgerApp {
@@ -21,15 +25,15 @@ public class AccountingLedgerApp {
         while (appRunning) {
 
             //welcome message
-            System.out.println("Welcome to Alondra's Prestigious Accounting Ledger Application! " +
-                    "\nWhere you can track all your financial transactions");
-            System.out.println("===================================================");
+            System.out.println("Welcome to Alondra's Prestigious Accounting Ledger Application!");
+            System.out.println("===============================================================");
 
             //display Home Screen options
-            System.out.println("D) Add Deposit " +
-                    "\nP) Make Payment (Debit) " +
-                    "\nL) Ledger " +
-                    "\nX) Exit ");
+            System.out.println("--- Welcome to the Home Screen ---");
+            System.out.println("D) Add Deposit");
+            System.out.println("P) Make Payment (Debit)");
+            System.out.println("L) Ledger");
+            System.out.println("X) Exit");
             System.out.print("Make a selection: ");
             String userSelection = ledgerScanner.nextLine().trim();
 
@@ -42,12 +46,67 @@ public class AccountingLedgerApp {
             } else if (userSelection.equalsIgnoreCase("P")) {
                 makePayment();
             } else if (userSelection.equalsIgnoreCase("L")) {
-//                openLedger();
+                openLedger();
             } else {
                 System.out.println("Invalid selection, please make a valid selection");
             }
         }
     }
+
+    //method for reading file and returns an ArrayList
+    public static ArrayList<Transaction> readFromCSV() {
+        ArrayList<Transaction> transaction = new ArrayList<>();
+
+        //read the file line by line
+        try {
+            //create a file reader to read the file
+            FileReader readFile = new FileReader("src/main/resources/transactions.csv");
+
+            //create the buffered reader to read the file
+            BufferedReader bufRead = new BufferedReader(readFile);
+
+            String line;
+
+            //while loop
+            while ((line = bufRead.readLine()) != null) {
+
+                //split the line into different pieces
+                String[] pieces = line.split("\\|");
+
+                //if statement for pieces of the line
+                if (pieces.length == 5) {
+
+                    //parse the pieces of the line to be for the user to read
+                    LocalDate date = LocalDate.parse(pieces[0].trim());
+                    LocalTime time = LocalTime.parse(pieces[1].trim());
+                    String description = pieces[2].trim();
+                    String vendor = pieces[3].trim();
+                    Double amount = Double.parseDouble(pieces[4].trim());
+
+                    //create a new transaction
+                    Transaction t = new Transaction(date, time, description, vendor, amount);
+
+                    //add the product to our transaction ArrayList
+                    transaction.add(t);
+                }
+            }
+            //close the buffered reader so it can read the file
+            bufRead.close();
+
+        } catch (Exception e) {
+
+            //if we run into an issue reading the file, display this instead
+            System.out.println("Error reading the file " + e.getMessage());
+        }
+
+//            //sort transactions from
+//            Collections.reserveArrayList;
+
+        //return the transaction
+        return transaction;
+    }
+
+    //method for writing to file
     public static void writeToCSV(Transaction transaction) {
         try {
 
@@ -57,12 +116,12 @@ public class AccountingLedgerApp {
             //create the buffered writer to write to file
             BufferedWriter bufWriter = new BufferedWriter(csvFile);
 
-            //create a date and time
+            //create a date and time - DO I NEED THIS?
             LocalDateTime time = LocalDateTime.now();
-            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("hh:mm");
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("hh:mm:ss");
             String formatTime = time.format(formatter);
 
-
+            //format the buffered writer will put the transaction info in
             bufWriter.write(transaction.getDate() + " | " +
                     transaction.getTime() + " | " +
                     transaction.getDescription() + " | " +
@@ -82,73 +141,106 @@ public class AccountingLedgerApp {
         }
     }
 
-    //METHOD FOR HOME SCREEN
+//METHOD FOR HOME SCREEN
 //    public static void homeScreen() {}
 
-//method for X) Exit
-public static void exitApp() {
+    //method for X) Exit
+    public static void exitApp() {
 
-    //user exiting program goodbye message
-    System.out.println("Thank you for choosing Alondra's Prestigious Accounting Ledger Application. " +
-            "\nYou are now exiting, Have a wonderful day!");
-}
+        //user exiting program goodbye message
+        System.out.println("Thank you for choosing Alondra's Prestigious Accounting Ledger Application. " +
+                "\n--- You are now exiting, Have a wonderful day! ---");
+    }
 
-// method for D) Add Deposit - MIGHT NEED TRY/CATCH STATEMENT TO READ/WRITE TO FILE
-public static void addDeposit() {
+    // method for D) Add Deposit - MIGHT NEED TRY/CATCH STATEMENT TO READ/WRITE TO FILE
+    public static void addDeposit() {
 
-    //ask user for deposit info and save it in the csv file
-    System.out.println("Enter description: ");
-    String description = ledgerScanner.nextLine().trim();
+        //ask user for deposit info and save it in the csv file
+        System.out.println("Enter description: ");
+        String description = ledgerScanner.nextLine().trim();
 
-    System.out.println("Enter vendor: ");
-    String vendor = ledgerScanner.nextLine().trim();
+        System.out.println("Enter vendor: ");
+        String vendor = ledgerScanner.nextLine().trim();
 
-    //amount will be positive
-    System.out.println("Enter amount: ");
-    Double amount = ledgerScanner.nextDouble();
-    ledgerScanner.nextLine(); //eats the new line
+        //amount will be positive
+        System.out.println("Enter amount: ");
+        Double amount = ledgerScanner.nextDouble();
+        ledgerScanner.nextLine(); //eats the new line
 
-    Transaction deposit = new Transaction(LocalDate.now(), LocalTime.now(), description, vendor, amount);
-    writeToCSV(deposit);
+        Transaction deposit = new Transaction(LocalDate.now(), LocalTime.now(), description, vendor, amount);
+        writeToCSV(deposit);
 
-    System.out.println("Deposit has successfully been made!");
-}
+        System.out.println("Deposit has successfully been made!");
+    }
 
-//method for P) Make Payment (Debit) - MIGHT NEED TRY/CATCH STATEMENT TO READ/WRITE TO FILE
-public static void makePayment() {
+    //method for P) Make Payment (Debit) - MIGHT NEED TRY/CATCH STATEMENT TO READ/WRITE TO FILE
+    public static void makePayment() {
 
-    //ask user for payment info and save it in the csv file
-    System.out.println("Enter description: ");
-    String description = ledgerScanner.nextLine().trim();
+        //ask user for payment info and save it in the csv file
+        System.out.println("Enter description: ");
+        String description = ledgerScanner.nextLine().trim();
 
-    System.out.println("Enter vendor: ");
-    String vendor = ledgerScanner.nextLine().trim();
+        System.out.println("Enter vendor: ");
+        String vendor = ledgerScanner.nextLine().trim();
 
-    //amount will be negative?? - MIGHT NEED IF STATEMENT
-    System.out.println("Enter amount: ");
-    Double amount = ledgerScanner.nextDouble();
-    ledgerScanner.nextLine(); //eats the new line
+        //amount will be negative?? - MIGHT NEED IF STATEMENT
+        System.out.println("Enter amount: ");
+        Double amount = ledgerScanner.nextDouble();
+        amount = -Math.abs(amount); // make sure it's negative
+        ledgerScanner.nextLine(); //eats the new line
 
-    Transaction payment = new Transaction(LocalDate.now(), LocalTime.now(), description, vendor, amount);
-    writeToCSV(payment);
+        Transaction payment = new Transaction(LocalDate.now(), LocalTime.now(), description, vendor, amount);
+        writeToCSV(payment);
 
-    System.out.println("Payment has successfully been made!");
-}
+        System.out.println("Payment has successfully been made!");
+    }
 
 
-//method for L) Ledger Screen
-//public static void openLedger() {
-//
-//    //ledger screen (all entries should show the newest entries first) - WILL NEED A WHILE LOOP?
-//    //A) All: display all entries
-//    //D) Deposits: display only the entries that are deposits into the account
-//    //P) Payments: display only the negative entries/payments
-//    //R) Reports: a new screen that allows the user to run pre-defined reports or to run a custom search
-//    //-1) Month To Date - WILL NEED SWITCH STATEMENT
-//    //-2) Previous Month
-//    //-3) Year To Date
-//    //-4) Previous Year
-//    //-5) Search By Vendor: prompt user for the vendor name and display all entries for that vendor
-//    //-0) Back: go back to Reports page
-//    //H) Home: go back to home screen
+    //method for L) Ledger Screen
+    public static void openLedger() {
+
+        boolean viewingLedger = true;
+
+        //while loop for viewing ledger (all entries should show the newest entries first)
+        while (viewingLedger) {
+
+            //A) All: display all entries
+            //D) Deposits: display only the entries that are deposits into the account
+            //P) Payments: display only the negative entries/payments
+            //R) Reports: a new screen that allows the user to run pre-defined reports or to run a custom search
+
+            //display Ledger Screen Submenu options
+            System.out.println("--- Welcome to the Ledger Screen ---");
+            System.out.println("A) All Transactions");
+            System.out.println("D) Deposits");
+            System.out.println("P) Payments");
+            System.out.println("R) Reports");
+            System.out.println("H) Home");
+            System.out.print("Choose an option: ");
+            String userChoice = ledgerScanner.nextLine().trim();
+
+            List<Transaction> allTranactions = readFromCSV();
+
+            switch (userChoice.toUpperCase()) {
+                case "A":
+                    break;
+                case "D":
+                    break;
+                case "P":
+                    break;
+                case "R":
+                    break;
+                case "H":
+                    viewingLedger = false;
+                    break;
+            }
+            //-1) Month To Date: display transactions from this month WILL NEED SWITCH STATEMENT
+            //-2) Previous Month: display transactions from last month
+            //-3) Year To Date: display transactions from this year
+            //-4) Previous Year: display transactions from last year
+            //-5) Search By Vendor: prompt user for the vendor name and display all entries for that vendor
+            //-0) Back: go back to Ledger page
+            //H) Home: go back to Home Screen
+        }
+    }
 }
