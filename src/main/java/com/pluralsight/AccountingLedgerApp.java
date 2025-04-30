@@ -100,7 +100,7 @@ public class AccountingLedgerApp {
         }
 
 //            //sort transactions from
-//            Collections.reserveArrayList;
+//            Collections.reverseArrayList;
 
         //return the transaction
         return transaction;
@@ -116,14 +116,16 @@ public class AccountingLedgerApp {
             //create the buffered writer to write to file
             BufferedWriter bufWriter = new BufferedWriter(csvFile);
 
-            //create a date and time - DO I NEED THIS?
+            //create a date and time
             LocalDateTime time = LocalDateTime.now();
+
+            //format time
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("hh:mm:ss");
             String formatTime = time.format(formatter);
 
             //format the buffered writer will put the transaction info in
             bufWriter.write(transaction.getDate() + " | " +
-                    transaction.getTime() + " | " +
+                    formatTime + " | " +
                     transaction.getDescription() + " | " +
                     transaction.getVendor() + " | " +
                     transaction.getAmount());
@@ -186,7 +188,12 @@ public class AccountingLedgerApp {
         //amount will be negative?? - MIGHT NEED IF STATEMENT
         System.out.println("Enter amount: ");
         Double amount = ledgerScanner.nextDouble();
-        amount = -Math.abs(amount); // make sure it's negative
+
+        //if statement for making sure amount is negative for a payment
+        if (amount > 0) {
+            amount = -amount;
+        }
+
         ledgerScanner.nextLine(); //eats the new line
 
         Transaction payment = new Transaction(LocalDate.now(), LocalTime.now(), description, vendor, amount);
@@ -195,7 +202,6 @@ public class AccountingLedgerApp {
         System.out.println("Payment has successfully been made!");
     }
 
-
     //method for L) Ledger Screen
     public static void openLedger() {
 
@@ -203,11 +209,6 @@ public class AccountingLedgerApp {
 
         //while loop for viewing ledger (all entries should show the newest entries first)
         while (viewingLedger) {
-
-            //A) All: display all entries
-            //D) Deposits: display only the entries that are deposits into the account
-            //P) Payments: display only the negative entries/payments
-            //R) Reports: a new screen that allows the user to run pre-defined reports or to run a custom search
 
             //display Ledger Screen Submenu options
             System.out.println("--- Welcome to the Ledger Screen ---");
@@ -219,18 +220,24 @@ public class AccountingLedgerApp {
             System.out.print("Choose an option: ");
             String userChoice = ledgerScanner.nextLine().trim();
 
-            List<Transaction> allTranactions = readFromCSV();
+            List<Transaction> allTransactions = readFromCSV();
 
+            //switch statement for the Ledger Screen based off what the user chooses
             switch (userChoice.toUpperCase()) {
                 case "A":
+                    //display all entries
                     break;
                 case "D":
+                    //display only the entries that are deposits into the account
                     break;
                 case "P":
+                    //display only the negative entries/payments
                     break;
                 case "R":
+                    //a new screen that allows the user to run pre-defined reports or to run a custom search
                     break;
                 case "H":
+                    //go back to Home Screen
                     viewingLedger = false;
                     break;
             }
@@ -240,7 +247,6 @@ public class AccountingLedgerApp {
             //-4) Previous Year: display transactions from last year
             //-5) Search By Vendor: prompt user for the vendor name and display all entries for that vendor
             //-0) Back: go back to Ledger page
-            //H) Home: go back to Home Screen
         }
     }
 }

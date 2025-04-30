@@ -4,4 +4,6 @@ date | time | description | vendor | amount
 2023-04-15 | 10:13:25 | Ergonomic keyboard | Amazon| -89.50
 2023-04-15 | 11:15:00 | Invoice 1001 paid | Joe| 1500.00
 2025-04-29 | 15:40:04 | Paycheck | Chewy | 500.0
-2025-04-30 | 13:34:00 | Credit card payment | Credit Union | 300.0
+2025-04-30 | 13:34:00 | Credit card payment | Credit Union | -300.0
+2025-04-30 | 17:20:04 | Car Payment | Nissan | -350.0
+2025-04-30 | 05:23:52 | Shed Payment | Home Depot | -200.0
