@@ -220,33 +220,49 @@ public class AccountingLedgerApp {
             System.out.print("Choose an option: ");
             String userChoice = ledgerScanner.nextLine().trim();
 
-            List<Transaction> allTransactions = readFromCSV();
+            ArrayList<Transaction> allTransactions = readFromCSV();
 
             //switch statement for the Ledger Screen based off what the user chooses
             switch (userChoice.toUpperCase()) {
                 case "A":
                     //display all entries
+                    for (Transaction t : allTransactions) {
+                        System.out.println(t);
+                    }
                     break;
                 case "D":
                     //display only the entries that are deposits into the account
+                    for (Transaction t : allTransactions) {
+                        if (t.getAmount() > 0) {
+                            System.out.println(t);
+                        }
+                    }
                     break;
                 case "P":
                     //display only the negative entries/payments
+                    for (Transaction t : allTransactions) {
+                        if (t.getAmount() < 0) {
+                            System.out.println(t);
+                        }
+                    }
                     break;
                 case "R":
                     //a new screen that allows the user to run pre-defined reports or to run a custom search
+                    openReports();
                     break;
                 case "H":
                     //go back to Home Screen
                     viewingLedger = false;
                     break;
             }
-            //-1) Month To Date: display transactions from this month WILL NEED SWITCH STATEMENT
-            //-2) Previous Month: display transactions from last month
-            //-3) Year To Date: display transactions from this year
-            //-4) Previous Year: display transactions from last year
-            //-5) Search By Vendor: prompt user for the vendor name and display all entries for that vendor
-            //-0) Back: go back to Ledger page
         }
+    }
+    public static void openReports(){
+        //-1) Month To Date: display transactions from this month WILL NEED SWITCH STATEMENT
+        //-2) Previous Month: display transactions from last month
+        //-3) Year To Date: display transactions from this year
+        //-4) Previous Year: display transactions from last year
+        //-5) Search By Vendor: prompt user for the vendor name and display all entries for that vendor
+        //-0) Back: go back to Ledger page
     }
 }
