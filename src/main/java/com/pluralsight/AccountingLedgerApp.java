@@ -211,7 +211,7 @@ public class AccountingLedgerApp {
         while (viewingLedger) {
 
             //display Ledger Screen Submenu options
-            System.out.println("--- Welcome to the Ledger Screen ---");
+            System.out.println("\n--- Welcome to the Ledger Screen ---");
             System.out.println("A) All Transactions");
             System.out.println("D) Deposits");
             System.out.println("P) Payments");
@@ -257,12 +257,53 @@ public class AccountingLedgerApp {
             }
         }
     }
+
+    //method for R) Reports Screen
     public static void openReports(){
-        //-1) Month To Date: display transactions from this month WILL NEED SWITCH STATEMENT
-        //-2) Previous Month: display transactions from last month
-        //-3) Year To Date: display transactions from this year
-        //-4) Previous Year: display transactions from last year
-        //-5) Search By Vendor: prompt user for the vendor name and display all entries for that vendor
-        //-0) Back: go back to Ledger page
+
+        boolean viewingReports = true;
+
+        //while loop for viewing reports (all entries should show the newest entries first)
+        while (viewingReports) {
+
+            //display Reports Screen Submenu options
+            System.out.println("\n--- Reports Menu ---");
+            System.out.println("1) Month To Date");
+            System.out.println("2) Previous Month");
+            System.out.println("3) Year To Date");
+            System.out.println("4) Previous Year");
+            System.out.println("5) Search by Vendor");
+            System.out.println("0) Back");
+            System.out.print("Choose a report option: ");
+            String choice = ledgerScanner.nextLine().trim();
+
+            LocalDate today = LocalDate.now();
+
+            //switch statement for the Reports Screen based off what the user chooses
+            switch  (choice) {
+                case 1:
+                    //display transactions from this month
+                    break;
+                case 2:
+                    //display transactions from last month
+                    break;
+                case 3:
+                    //display transactions from this year
+                    break;
+                case 4:
+                    //display transactions from last year
+                    break;
+                case 5:
+                    //prompt user for the vendor name and display all entries for that vendor
+                    System.out.print("Enter vendor name: ");
+                    String vendorSearch = ledgerScanner.nextLine().trim();
+
+
+                    break;
+                case 0:
+                    //go back to Ledger Screen
+                    viewingReports = false;
+            }
+        }
     }
 }
