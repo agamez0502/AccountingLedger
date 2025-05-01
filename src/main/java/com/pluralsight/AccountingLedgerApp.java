@@ -26,8 +26,15 @@ public class AccountingLedgerApp {
         while (appRunning) {
 
             //welcome message
-            System.out.println("\nWelcome to Alondra's Prestigious Accounting Ledger Application!");
-            System.out.println("===============================================================");
+            System.out.println("╔═══════════════════════════════════════════════════════════════════╗");
+            System.out.println("║  Welcome to Alondra's Prestigious Accounting Ledger Application!  ║");
+            System.out.println("╚═══════════════════════════════════════════════════════════════════╝");
+
+            try {
+                Thread.sleep(1000);
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
 
             //display Home Screen options
             System.out.println("--- Welcome to the Home Screen ---");
@@ -303,7 +310,7 @@ public class AccountingLedgerApp {
     }
 
     //method for R) Reports Screen
-    public static void openReports(){
+    public static void openReports() {
 
         boolean viewingReports = true;
 
@@ -323,25 +330,84 @@ public class AccountingLedgerApp {
 
             LocalDate today = LocalDate.now();
 
+//            //sort transactions from newest to oldest
+//            Collections.reverse(allTransactions);
+
             //switch statement for the Reports Screen based off what the user chooses
-            switch  (choice) {
+            switch (choice) {
                 case "1":
+
+                    //fake user friendly header row
+                    System.out.println("\nDate         | Time     | Description          | Vendor          |     Amount");
+                    System.out.println("-------------|----------|----------------------|-----------------|------------");
+
                     //display transactions from this month
+                    for (Transaction t : readFromCSV()) {
+                        if (t.getDate().getMonth() == today.getMonth() &&
+                                t.getDate().getYear() == today.getYear()) {
+                            displayTransaction(t);
+                        }
+                    }
                     break;
                 case "2":
+
+                    //fake user friendly header row
+                    System.out.println("\nDate         | Time     | Description          | Vendor          |     Amount");
+                    System.out.println("-------------|----------|----------------------|-----------------|------------");
+
                     //display transactions from last month
+                    LocalDate lastMonth = today.minusMonths(1);
+
+                    for (Transaction t : readFromCSV()) {
+                        if (t.getDate().getMonth() == lastMonth.getMonth() &&
+                                t.getDate().getYear() == lastMonth.getYear()) {
+                            displayTransaction(t);
+                        }
+                    }
                     break;
                 case "3":
+
+                    //fake user friendly header row
+                    System.out.println("\nDate         | Time     | Description          | Vendor          |     Amount");
+                    System.out.println("-------------|----------|----------------------|-----------------|------------");
+
                     //display transactions from this year
+                    for (Transaction t : readFromCSV()) {
+                        if (t.getDate().getYear() == today.getYear()) {
+                            displayTransaction(t);
+                        }
+                    }
                     break;
                 case "4":
+
+                    //fake user friendly header row
+                    System.out.println("\nDate         | Time     | Description          | Vendor          |     Amount");
+                    System.out.println("-------------|----------|----------------------|-----------------|------------");
+
                     //display transactions from last year
+                    LocalDate lastYear = today.minusYears(1);
+
+                    for (Transaction t : readFromCSV()) {
+                        if (t.getDate().getYear() == lastYear.getYear()) {
+                            displayTransaction(t);
+                        }
+                    }
                     break;
                 case "5":
+
+                    //fake user friendly header row
+                    System.out.println("\nDate         | Time     | Description          | Vendor          |     Amount");
+                    System.out.println("-------------|----------|----------------------|-----------------|------------");
+
                     //prompt user for the vendor name and display all entries for that vendor
                     System.out.print("Enter vendor name: ");
                     String vendorSearch = ledgerScanner.nextLine().trim();
 
+                    for (Transaction t : readFromCSV()) {
+                        if (t.getVendor().equalsIgnoreCase(vendorSearch)) {
+                            displayTransaction(t);
+                        }
+                    }
                     break;
                 case "0":
                     //go back to Ledger Screen
