@@ -9,6 +9,7 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Scanner;
 
@@ -25,7 +26,7 @@ public class AccountingLedgerApp {
         while (appRunning) {
 
             //welcome message
-            System.out.println("Welcome to Alondra's Prestigious Accounting Ledger Application!");
+            System.out.println("\nWelcome to Alondra's Prestigious Accounting Ledger Application!");
             System.out.println("===============================================================");
 
             //display Home Screen options
@@ -65,6 +66,9 @@ public class AccountingLedgerApp {
             //create the buffered reader to read the file
             BufferedReader bufRead = new BufferedReader(readFile);
 
+            //skips header row
+            String header = bufRead.readLine();
+
             String line;
 
             //while loop
@@ -99,9 +103,6 @@ public class AccountingLedgerApp {
             System.out.println("Error reading the file " + e.getMessage());
         }
 
-//            //sort transactions from
-//            Collections.reverseArrayList;
-
         //return the transaction
         return transaction;
     }
@@ -120,7 +121,7 @@ public class AccountingLedgerApp {
             LocalDateTime time = LocalDateTime.now();
 
             //format time
-            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("hh:mm:ss");
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm:ss");
             String formatTime = time.format(formatter);
 
             //format the buffered writer will put the transaction info in
@@ -150,12 +151,16 @@ public class AccountingLedgerApp {
     public static void exitApp() {
 
         //user exiting program goodbye message
-        System.out.println("Thank you for choosing Alondra's Prestigious Accounting Ledger Application. " +
-                "\n--- You are now exiting, Have a wonderful day! ---");
+        System.out.println("============================================================================");
+        System.out.println("Thank you for choosing Alondra's Prestigious Accounting Ledger Application. ");
+        System.out.println("--- You are now exiting, Have a wonderful day! ---");
     }
 
     // method for D) Add Deposit - MIGHT NEED TRY/CATCH STATEMENT TO READ/WRITE TO FILE
     public static void addDeposit() {
+
+        //user friendly line separator
+        System.out.println("-------------------------------------------");
 
         //ask user for deposit info and save it in the csv file
         System.out.println("Enter description: ");
@@ -172,11 +177,20 @@ public class AccountingLedgerApp {
         Transaction deposit = new Transaction(LocalDate.now(), LocalTime.now(), description, vendor, amount);
         writeToCSV(deposit);
 
-        System.out.println("Deposit has successfully been made!");
+        System.out.println("\n**Deposit has successfully been made!**\n");
+
+        //maybe work on a loop for this screen
+//        System.out.println("\n--- Welcome to the Deposit Menu ---");
+//        System.out.println("1) Add Deposit");
+//        System.out.println("2) Home");
+//        System.out.println("Would you like to: ");
     }
 
     //method for P) Make Payment (Debit) - MIGHT NEED TRY/CATCH STATEMENT TO READ/WRITE TO FILE
     public static void makePayment() {
+
+        //user friendly line separator
+        System.out.println("-------------------------------------------");
 
         //ask user for payment info and save it in the csv file
         System.out.println("Enter description: ");
@@ -199,7 +213,13 @@ public class AccountingLedgerApp {
         Transaction payment = new Transaction(LocalDate.now(), LocalTime.now(), description, vendor, amount);
         writeToCSV(payment);
 
-        System.out.println("Payment has successfully been made!");
+        System.out.println("\n**Payment has successfully been made!**\n");
+
+        //maybe work on a loop for this screen
+//        System.out.println("\n--- Welcome to the Payment Menu ---");
+//        System.out.println("1) Make Payment");
+//        System.out.println("2) Home");
+//        System.out.println("Would you like to: ");
     }
 
     //method for L) Ledger Screen
@@ -207,7 +227,7 @@ public class AccountingLedgerApp {
 
         boolean viewingLedger = true;
 
-        //while loop for viewing ledger (all entries should show the newest entries first)
+        //while loop for viewing ledger
         while (viewingLedger) {
 
             //display Ledger Screen Submenu options
@@ -222,27 +242,42 @@ public class AccountingLedgerApp {
 
             ArrayList<Transaction> allTransactions = readFromCSV();
 
+            //sort transactions from newest to oldest
+            Collections.reverse(allTransactions);
+
             //switch statement for the Ledger Screen based off what the user chooses
             switch (userChoice.toUpperCase()) {
                 case "A":
+                    //fake user friendly header row
+                    System.out.println("\nDate         | Time     | Description          | Vendor          |     Amount");
+                    System.out.println("-------------|----------|----------------------|-----------------|------------");
+
                     //display all entries
                     for (Transaction t : allTransactions) {
-                        System.out.println(t);
+                        displayTransaction(t);
                     }
                     break;
                 case "D":
+                    //fake user friendly header row
+                    System.out.println("\nDate         | Time     | Description          | Vendor          |     Amount");
+                    System.out.println("-------------|----------|----------------------|-----------------|------------");
+
                     //display only the entries that are deposits into the account
                     for (Transaction t : allTransactions) {
                         if (t.getAmount() > 0) {
-                            System.out.println(t);
+                            displayTransaction(t);
                         }
                     }
                     break;
                 case "P":
+                    //fake user friendly header row
+                    System.out.println("\nDate         | Time     | Description          | Vendor          |     Amount");
+                    System.out.println("-------------|----------|----------------------|-----------------|------------");
+
                     //display only the negative entries/payments
                     for (Transaction t : allTransactions) {
                         if (t.getAmount() < 0) {
-                            System.out.println(t);
+                            displayTransaction(t);
                         }
                     }
                     break;
@@ -254,8 +289,17 @@ public class AccountingLedgerApp {
                     //go back to Home Screen
                     viewingLedger = false;
                     break;
+
+                default:
+                    System.out.println("Invalid selection");
             }
         }
+    }
+
+    //method to display transactions with special formatting, so it doesn't print out weird
+    public static void displayTransaction(Transaction t) {
+        System.out.printf("%-12s | %-8s | %-20s | %-15s | %10.2f\n",
+                t.getDate(), t.getTime(), t.getDescription(), t.getVendor(), t.getAmount());
     }
 
     //method for R) Reports Screen
@@ -281,28 +325,31 @@ public class AccountingLedgerApp {
 
             //switch statement for the Reports Screen based off what the user chooses
             switch  (choice) {
-                case 1:
+                case "1":
                     //display transactions from this month
                     break;
-                case 2:
+                case "2":
                     //display transactions from last month
                     break;
-                case 3:
+                case "3":
                     //display transactions from this year
                     break;
-                case 4:
+                case "4":
                     //display transactions from last year
                     break;
-                case 5:
+                case "5":
                     //prompt user for the vendor name and display all entries for that vendor
                     System.out.print("Enter vendor name: ");
                     String vendorSearch = ledgerScanner.nextLine().trim();
 
-
                     break;
-                case 0:
+                case "0":
                     //go back to Ledger Screen
                     viewingReports = false;
+                    break;
+
+                default:
+                    System.out.println("Invalid selection");
             }
         }
     }
