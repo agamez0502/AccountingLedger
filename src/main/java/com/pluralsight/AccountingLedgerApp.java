@@ -20,24 +20,16 @@ public class AccountingLedgerApp {
 
     public static void main(String[] args) {
 
+        homeScreen();
+
         //while loop will run until user chooses to exit the application
         boolean appRunning = true;
 
         while (appRunning) {
 
-            //welcome message
-            System.out.println("╔═══════════════════════════════════════════════════════════════════╗");
-            System.out.println("║  Welcome to Alondra's Prestigious Accounting Ledger Application!  ║");
-            System.out.println("╚═══════════════════════════════════════════════════════════════════╝");
-
-            try {
-                Thread.sleep(1000);
-            } catch (InterruptedException e) {
-                throw new RuntimeException(e);
-            }
-
             //display Home Screen options
-            System.out.println("\n=========== \uD83C\uDFE6 Welcome to the Home Screen ===========");
+            printSlowly();
+            System.out.println("\n=========== \uD83C\uDFE6 Home Screen ===========");
             System.out.println("D) Add Deposit");
             System.out.println("P) Make Payment (Debit)");
             System.out.println("L) Ledger");
@@ -56,7 +48,7 @@ public class AccountingLedgerApp {
             } else if (userSelection.equalsIgnoreCase("L")) {
                 openLedger();
             } else {
-                System.out.println("Invalid selection, please make a valid selection");
+                System.out.println("Invalid selection, please make a valid selection ❌");
             }
         }
     }
@@ -107,7 +99,7 @@ public class AccountingLedgerApp {
         } catch (Exception e) {
 
             //if we run into an issue reading the file, display this instead
-            System.out.println("Error reading the file " + e.getMessage());
+            System.out.println("Error reading the file ❌" + e.getMessage());
         }
 
         //return the transaction
@@ -147,20 +139,38 @@ public class AccountingLedgerApp {
         } catch (Exception e) {
 
             //if we run into an issue writing to the file, display this instead
-            System.out.println("Error writing to the file: " + e.getMessage());
+            System.out.println("Error writing to the file: ❌" + e.getMessage());
         }
     }
 
-//METHOD FOR HOME SCREEN
-//    public static void homeScreen() {}
+    //method for Home Screen
+    public static void homeScreen() {
+
+        //welcome message
+        System.out.println("╔═══════════════════════════════════════════════════════════════════╗");
+        System.out.println("║  Welcome to Alondra's Prestigious Accounting Ledger Application!  ║");
+        System.out.println("╚═══════════════════════════════════════════════════════════════════╝");
+    }
 
     //method for X) Exit
     public static void exitApp() {
 
         //user exiting program goodbye message
-        System.out.println("============================================================================");
-        System.out.println("Thank you for choosing Alondra's Prestigious Accounting Ledger Application. ");
-        System.out.println("--- You are now exiting, Have a wonderful day! ---");
+        System.out.println("\n");
+        System.out.println("╔═══════════════════════════════════════════════════════════════════════════════╗");
+        System.out.println("║  Thank you for choosing Alondra's Prestigious Accounting Ledger Application!  ║");
+        System.out.println("╚═══════════════════════════════════════════════════════════════════════════════╝");
+    }
+
+    //method for printing things out slowly
+    public static void printSlowly() {
+
+        //helps it print out the next thing slowly
+        try {
+            Thread.sleep(1000);
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     // method for D) Add Deposit
@@ -172,10 +182,11 @@ public class AccountingLedgerApp {
         while (addingDeposit) {
 
             //display Add Deposit Screen Submenu options
-            System.out.println("\n--- Welcome to the Deposit Menu ---");
+            printSlowly();
+            System.out.println("\n=========== \uD83D\uDCB5 Deposit Menu ===========");
             System.out.println("1) Add Deposit");
             System.out.println("2) Home");
-            System.out.println("Would you like to: ");
+            System.out.print("Would you like to: ");
             String depositChoice = ledgerScanner.nextLine().trim();
 
             //switch statement for Add Deposit Screen based off what the user chooses
@@ -183,7 +194,8 @@ public class AccountingLedgerApp {
                 case "1":
 
                     //user friendly line separator
-                    System.out.println("-------------------------------------------");
+                    printSlowly();
+                    System.out.println("\n===================================");
 
                     //ask user for deposit info and save it in the csv file
                     System.out.println("Enter description: ");
@@ -200,7 +212,8 @@ public class AccountingLedgerApp {
                     Transaction deposit = new Transaction(LocalDate.now(), LocalTime.now(), description, vendor, amount);
                     writeToCSV(deposit);
 
-                    System.out.println("\n**Deposit has successfully been made!**\n");
+                    printSlowly();
+                    System.out.println("\n**Deposit has successfully been made! ✅**\n");
                     break;
 
                 case "2":
@@ -208,7 +221,8 @@ public class AccountingLedgerApp {
                     break;
 
                 default:
-                    System.out.println("Invalid selection");
+                    printSlowly();
+                    System.out.println("Invalid selection ❌");
             }
 
         }
@@ -224,7 +238,8 @@ public class AccountingLedgerApp {
         while (makingPayment) {
 
             //display Make Payment Screen Submenu options
-            System.out.println("\n--- Welcome to the Payment Menu ---");
+            printSlowly();
+            System.out.println("\n=========== \uD83D\uDCB8 Payment Menu ===========");
             System.out.println("1) Make Payment");
             System.out.println("2) Home");
             System.out.print("Would you like to: ");
@@ -234,7 +249,8 @@ public class AccountingLedgerApp {
             switch (paymentChoice) {
                 case "1":
 
-                    System.out.println("-----------------------------------");
+                    printSlowly();
+                    System.out.println("\n===================================");
 
                     //ask user for payment info and save it in the csv file
                     System.out.println("Enter description: ");
@@ -257,7 +273,8 @@ public class AccountingLedgerApp {
                     Transaction payment = new Transaction(LocalDate.now(), LocalTime.now(), description, vendor, amount);
                     writeToCSV(payment);
 
-                    System.out.println("\n**Payment has successfully been made!**\n");
+                    printSlowly();
+                    System.out.println("\n**Payment has successfully been made! ✅**\n");
                     break;
 
                 case "2":
@@ -265,7 +282,8 @@ public class AccountingLedgerApp {
                     break;
 
                 default:
-                    System.out.println("Invalid selection");
+                    printSlowly();
+                    System.out.println("Invalid selection ❌");
             }
 
         }
@@ -280,7 +298,8 @@ public class AccountingLedgerApp {
         while (viewingLedger) {
 
             //display Ledger Screen Submenu options
-            System.out.println("\n--- Welcome to the Ledger Screen ---");
+            printSlowly();
+            System.out.println("\n=========== \uD83D\uDCD2 Ledger Menu ===========");
             System.out.println("A) All Transactions");
             System.out.println("D) Deposits");
             System.out.println("P) Payments");
@@ -307,7 +326,7 @@ public class AccountingLedgerApp {
                     }
                     break;
                 case "D":
-                    System.out.println("\n=========== \uD83D\uDCB8 Deposit Transactions ===========");
+                    System.out.println("\n=========== \uD83D\uDCB5 Deposit Transactions ===========");
                     //fake user friendly header row
                     formatHeader();
 
@@ -340,7 +359,8 @@ public class AccountingLedgerApp {
                     break;
 
                 default:
-                    System.out.println("Invalid selection");
+                    printSlowly();
+                    System.out.println("Invalid selection ❌");
             }
         }
     }
@@ -367,9 +387,8 @@ public class AccountingLedgerApp {
 
             //display Reports Screen Submenu options
 //            System.out.println("\n--- Reports Menu ---");
-            System.out.println("\n=====================================");
-            System.out.println("     📊 Alondra's Ledger Reports 📊");
-            System.out.println("=====================================\n");
+            printSlowly();
+            System.out.println("\n=========== \uD83D\uDCCA Reports Menu ===========");
             System.out.println("1) Month To Date");
             System.out.println("2) Previous Month");
             System.out.println("3) Year To Date");
@@ -388,7 +407,7 @@ public class AccountingLedgerApp {
             switch (choice) {
                 case "1":
 
-                    System.out.println("\n=========== 📆 Month To Date Report ===========");
+                    System.out.println("\n=========== \uD83D\uDCC6 Month To Date Report ===========");
                     //fake user friendly header row
                     formatHeader();
 
@@ -401,7 +420,7 @@ public class AccountingLedgerApp {
                     }
                     break;
                 case "2":
-                    System.out.println("\n=========== 📆 Previous Month Report ===========");
+                    System.out.println("\n=========== \uD83D\uDCC6 Previous Month Report ===========");
                     //fake user friendly header row
                     formatHeader();
 
@@ -417,7 +436,7 @@ public class AccountingLedgerApp {
                     break;
                 case "3":
 
-                    System.out.println("\n=========== 📅 Year To Date Report ===========");
+                    System.out.println("\n=========== \uD83D\uDCC6 Year To Date Report ===========");
                     //fake user friendly header row
                     formatHeader();
 
@@ -430,7 +449,7 @@ public class AccountingLedgerApp {
                     break;
                 case "4":
 
-                    System.out.println("\n=========== 🗓️ Previous Year Report ===========");
+                    System.out.println("\n=========== \uD83D\uDCC6 Previous Year Report ===========");
                     //fake user friendly header row
                     formatHeader();
 
@@ -446,10 +465,11 @@ public class AccountingLedgerApp {
                 case "5":
 
                     //prompt user for the vendor name and display all entries for that vendor
+                    System.out.println("\n===================================");
                     System.out.print("Enter vendor name: ");
                     String vendorSearch = ledgerScanner.nextLine().trim();
 
-                    System.out.println("\n=========== 🧾 Transactions for Vendor: " + vendorSearch + " ===========");
+                    System.out.println("\n=========== \uD83D\uDCC2 Transactions for Vendor: " + vendorSearch + " ===========");
                     //fake user friendly header row
                     formatHeader();
 
@@ -465,7 +485,8 @@ public class AccountingLedgerApp {
                     break;
 
                 default:
-                    System.out.println("Invalid selection");
+                    printSlowly();
+                    System.out.println("Invalid selection ❌");
             }
         }
     }
