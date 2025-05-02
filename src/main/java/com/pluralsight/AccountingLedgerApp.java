@@ -163,70 +163,112 @@ public class AccountingLedgerApp {
         System.out.println("--- You are now exiting, Have a wonderful day! ---");
     }
 
-    // method for D) Add Deposit - MIGHT NEED TRY/CATCH STATEMENT TO READ/WRITE TO FILE
+    // method for D) Add Deposit
     public static void addDeposit() {
 
-        //user friendly line separator
-        System.out.println("-------------------------------------------");
+        boolean addingDeposit = true;
 
-        //ask user for deposit info and save it in the csv file
-        System.out.println("Enter description: ");
-        String description = ledgerScanner.nextLine().trim();
+        //while loop for adding a deposit
+        while (addingDeposit) {
 
-        System.out.println("Enter vendor: ");
-        String vendor = ledgerScanner.nextLine().trim();
+            //display Add Deposit Screen Submenu options
+            System.out.println("\n--- Welcome to the Deposit Menu ---");
+            System.out.println("1) Add Deposit");
+            System.out.println("2) Home");
+            System.out.println("Would you like to: ");
+            String depositChoice = ledgerScanner.nextLine().trim();
 
-        //amount will be positive
-        System.out.println("Enter amount: ");
-        Double amount = ledgerScanner.nextDouble();
-        ledgerScanner.nextLine(); //eats the new line
+            //switch statement for Add Deposit Screen based off what the user chooses
+            switch (depositChoice) {
+                case "1":
 
-        Transaction deposit = new Transaction(LocalDate.now(), LocalTime.now(), description, vendor, amount);
-        writeToCSV(deposit);
+                    //user friendly line separator
+                    System.out.println("-------------------------------------------");
 
-        System.out.println("\n**Deposit has successfully been made!**\n");
+                    //ask user for deposit info and save it in the csv file
+                    System.out.println("Enter description: ");
+                    String description = ledgerScanner.nextLine().trim();
 
-        //maybe work on a loop for this screen
-//        System.out.println("\n--- Welcome to the Deposit Menu ---");
-//        System.out.println("1) Add Deposit");
-//        System.out.println("2) Home");
-//        System.out.println("Would you like to: ");
-    }
+                    System.out.println("Enter vendor: ");
+                    String vendor = ledgerScanner.nextLine().trim();
 
-    //method for P) Make Payment (Debit) - MIGHT NEED TRY/CATCH STATEMENT TO READ/WRITE TO FILE
-    public static void makePayment() {
+                    //amount will be positive
+                    System.out.println("Enter amount: ");
+                    Double amount = ledgerScanner.nextDouble();
+                    ledgerScanner.nextLine(); //eats the new line
 
-        //user friendly line separator
-        System.out.println("-------------------------------------------");
+                    Transaction deposit = new Transaction(LocalDate.now(), LocalTime.now(), description, vendor, amount);
+                    writeToCSV(deposit);
 
-        //ask user for payment info and save it in the csv file
-        System.out.println("Enter description: ");
-        String description = ledgerScanner.nextLine().trim();
+                    System.out.println("\n**Deposit has successfully been made!**\n");
+                    break;
 
-        System.out.println("Enter vendor: ");
-        String vendor = ledgerScanner.nextLine().trim();
+                case "2":
+                    addingDeposit = false;
+                    break;
 
-        //amount will be negative?? - MIGHT NEED IF STATEMENT
-        System.out.println("Enter amount: ");
-        Double amount = ledgerScanner.nextDouble();
+                default:
+                    System.out.println("Invalid selection");
+            }
 
-        //if statement for making sure amount is negative for a payment
-        if (amount > 0) {
-            amount = -amount;
         }
 
-        ledgerScanner.nextLine(); //eats the new line
+    }
 
-        Transaction payment = new Transaction(LocalDate.now(), LocalTime.now(), description, vendor, amount);
-        writeToCSV(payment);
+    //method for P) Make Payment (Debit)
+    public static void makePayment() {
 
-        System.out.println("\n**Payment has successfully been made!**\n");
+        boolean makingPayment = true;
 
-        //maybe work on a loop for this screen
-//        System.out.println("\n--- Welcome to the Payment Menu ---");
-//        System.out.println("1) Make Payment");
-//        System.out.println("2) Home");
-//        System.out.println("Would you like to: ");
+        //while loop for making a payment
+        while (makingPayment) {
+
+            //display Make Payment Screen Submenu options
+            System.out.println("\n--- Welcome to the Payment Menu ---");
+            System.out.println("1) Make Payment");
+            System.out.println("2) Home");
+            System.out.print("Would you like to: ");
+            String paymentChoice = ledgerScanner.nextLine().trim();
+
+            //switch statement for Make Payment Screen based off what the user chooses
+            switch (paymentChoice) {
+                case "1":
+
+                    System.out.println("-----------------------------------");
+
+                    //ask user for payment info and save it in the csv file
+                    System.out.println("Enter description: ");
+                    String description = ledgerScanner.nextLine().trim();
+
+                    System.out.println("Enter vendor: ");
+                    String vendor = ledgerScanner.nextLine().trim();
+
+                    //amount will be negative?? - MIGHT NEED IF STATEMENT
+                    System.out.println("Enter amount: ");
+                    Double amount = ledgerScanner.nextDouble();
+
+                    //if statement for making sure amount is negative for a payment
+                    if (amount > 0) {
+                        amount = -amount;
+                    }
+
+                    ledgerScanner.nextLine(); //eats the new line
+
+                    Transaction payment = new Transaction(LocalDate.now(), LocalTime.now(), description, vendor, amount);
+                    writeToCSV(payment);
+
+                    System.out.println("\n**Payment has successfully been made!**\n");
+                    break;
+
+                case "2":
+                    makingPayment = false;
+                    break;
+
+                default:
+                    System.out.println("Invalid selection");
+            }
+
+        }
     }
 
     //method for L) Ledger Screen
@@ -395,13 +437,14 @@ public class AccountingLedgerApp {
                     break;
                 case "5":
 
+                    //prompt user for the vendor name and display all entries for that vendor
+                    System.out.print("Enter vendor name: ");
+                    String vendorSearch = ledgerScanner.nextLine().trim();
+
                     //fake user friendly header row
                     System.out.println("\nDate         | Time     | Description          | Vendor          |     Amount");
                     System.out.println("-------------|----------|----------------------|-----------------|------------");
 
-                    //prompt user for the vendor name and display all entries for that vendor
-                    System.out.print("Enter vendor name: ");
-                    String vendorSearch = ledgerScanner.nextLine().trim();
 
                     for (Transaction t : readFromCSV()) {
                         if (t.getVendor().equalsIgnoreCase(vendorSearch)) {

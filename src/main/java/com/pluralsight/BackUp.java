@@ -9,6 +9,7 @@
 //import java.time.LocalTime;
 //import java.time.format.DateTimeFormatter;
 //import java.util.ArrayList;
+//import java.util.Collections;
 //import java.util.List;
 //import java.util.Scanner;
 //
@@ -25,8 +26,15 @@
 //        while (appRunning) {
 //
 //            //welcome message
-//            System.out.println("Welcome to Alondra's Prestigious Accounting Ledger Application!");
-//            System.out.println("===============================================================");
+//            System.out.println("╔═══════════════════════════════════════════════════════════════════╗");
+//            System.out.println("║  Welcome to Alondra's Prestigious Accounting Ledger Application!  ║");
+//            System.out.println("╚═══════════════════════════════════════════════════════════════════╝");
+//
+//            try {
+//                Thread.sleep(1000);
+//            } catch (InterruptedException e) {
+//                throw new RuntimeException(e);
+//            }
 //
 //            //display Home Screen options
 //            System.out.println("--- Welcome to the Home Screen ---");
@@ -65,6 +73,9 @@
 //            //create the buffered reader to read the file
 //            BufferedReader bufRead = new BufferedReader(readFile);
 //
+//            //skips header row
+//            String header = bufRead.readLine();
+//
 //            String line;
 //
 //            //while loop
@@ -99,9 +110,6 @@
 //            System.out.println("Error reading the file " + e.getMessage());
 //        }
 //
-////            //sort transactions from
-////            Collections.reverseArrayList;
-//
 //        //return the transaction
 //        return transaction;
 //    }
@@ -120,7 +128,7 @@
 //            LocalDateTime time = LocalDateTime.now();
 //
 //            //format time
-//            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("hh:mm:ss");
+//            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm:ss");
 //            String formatTime = time.format(formatter);
 //
 //            //format the buffered writer will put the transaction info in
@@ -150,12 +158,16 @@
 //    public static void exitApp() {
 //
 //        //user exiting program goodbye message
-//        System.out.println("Thank you for choosing Alondra's Prestigious Accounting Ledger Application. " +
-//                "\n--- You are now exiting, Have a wonderful day! ---");
+//        System.out.println("============================================================================");
+//        System.out.println("Thank you for choosing Alondra's Prestigious Accounting Ledger Application. ");
+//        System.out.println("--- You are now exiting, Have a wonderful day! ---");
 //    }
 //
 //    // method for D) Add Deposit - MIGHT NEED TRY/CATCH STATEMENT TO READ/WRITE TO FILE
 //    public static void addDeposit() {
+//
+//        //user friendly line separator
+//        System.out.println("-------------------------------------------");
 //
 //        //ask user for deposit info and save it in the csv file
 //        System.out.println("Enter description: ");
@@ -172,11 +184,20 @@
 //        Transaction deposit = new Transaction(LocalDate.now(), LocalTime.now(), description, vendor, amount);
 //        writeToCSV(deposit);
 //
-//        System.out.println("Deposit has successfully been made!");
+//        System.out.println("\n**Deposit has successfully been made!**\n");
+//
+//        //maybe work on a loop for this screen
+////        System.out.println("\n--- Welcome to the Deposit Menu ---");
+////        System.out.println("1) Add Deposit");
+////        System.out.println("2) Home");
+////        System.out.println("Would you like to: ");
 //    }
 //
 //    //method for P) Make Payment (Debit) - MIGHT NEED TRY/CATCH STATEMENT TO READ/WRITE TO FILE
 //    public static void makePayment() {
+//
+//        //user friendly line separator
+//        System.out.println("-------------------------------------------");
 //
 //        //ask user for payment info and save it in the csv file
 //        System.out.println("Enter description: ");
@@ -199,7 +220,13 @@
 //        Transaction payment = new Transaction(LocalDate.now(), LocalTime.now(), description, vendor, amount);
 //        writeToCSV(payment);
 //
-//        System.out.println("Payment has successfully been made!");
+//        System.out.println("\n**Payment has successfully been made!**\n");
+//
+//        //maybe work on a loop for this screen
+////        System.out.println("\n--- Welcome to the Payment Menu ---");
+////        System.out.println("1) Make Payment");
+////        System.out.println("2) Home");
+////        System.out.println("Would you like to: ");
 //    }
 //
 //    //method for L) Ledger Screen
@@ -207,11 +234,11 @@
 //
 //        boolean viewingLedger = true;
 //
-//        //while loop for viewing ledger (all entries should show the newest entries first)
+//        //while loop for viewing ledger
 //        while (viewingLedger) {
 //
 //            //display Ledger Screen Submenu options
-//            System.out.println("--- Welcome to the Ledger Screen ---");
+//            System.out.println("\n--- Welcome to the Ledger Screen ---");
 //            System.out.println("A) All Transactions");
 //            System.out.println("D) Deposits");
 //            System.out.println("P) Payments");
@@ -220,33 +247,177 @@
 //            System.out.print("Choose an option: ");
 //            String userChoice = ledgerScanner.nextLine().trim();
 //
-//            List<Transaction> allTransactions = readFromCSV();
+//            ArrayList<Transaction> allTransactions = readFromCSV();
+//
+//            //sort transactions from newest to oldest
+//            Collections.reverse(allTransactions);
 //
 //            //switch statement for the Ledger Screen based off what the user chooses
 //            switch (userChoice.toUpperCase()) {
 //                case "A":
+//                    //fake user friendly header row
+//                    System.out.println("\nDate         | Time     | Description          | Vendor          |     Amount");
+//                    System.out.println("-------------|----------|----------------------|-----------------|------------");
+//
 //                    //display all entries
+//                    for (Transaction t : allTransactions) {
+//                        displayTransaction(t);
+//                    }
 //                    break;
 //                case "D":
+//                    //fake user friendly header row
+//                    System.out.println("\nDate         | Time     | Description          | Vendor          |     Amount");
+//                    System.out.println("-------------|----------|----------------------|-----------------|------------");
+//
 //                    //display only the entries that are deposits into the account
+//                    for (Transaction t : allTransactions) {
+//                        if (t.getAmount() > 0) {
+//                            displayTransaction(t);
+//                        }
+//                    }
 //                    break;
 //                case "P":
+//                    //fake user friendly header row
+//                    System.out.println("\nDate         | Time     | Description          | Vendor          |     Amount");
+//                    System.out.println("-------------|----------|----------------------|-----------------|------------");
+//
 //                    //display only the negative entries/payments
+//                    for (Transaction t : allTransactions) {
+//                        if (t.getAmount() < 0) {
+//                            displayTransaction(t);
+//                        }
+//                    }
 //                    break;
 //                case "R":
 //                    //a new screen that allows the user to run pre-defined reports or to run a custom search
+//                    openReports();
 //                    break;
 //                case "H":
 //                    //go back to Home Screen
 //                    viewingLedger = false;
 //                    break;
+//
+//                default:
+//                    System.out.println("Invalid selection");
 //            }
-//            //-1) Month To Date: display transactions from this month WILL NEED SWITCH STATEMENT
-//            //-2) Previous Month: display transactions from last month
-//            //-3) Year To Date: display transactions from this year
-//            //-4) Previous Year: display transactions from last year
-//            //-5) Search By Vendor: prompt user for the vendor name and display all entries for that vendor
-//            //-0) Back: go back to Ledger page
 //        }
 //    }
+//
+//    //method to display transactions with special formatting, so it doesn't print out weird
+//    public static void displayTransaction(Transaction t) {
+//        System.out.printf("%-12s | %-8s | %-20s | %-15s | %10.2f\n",
+//                t.getDate(), t.getTime(), t.getDescription(), t.getVendor(), t.getAmount());
+//    }
+//
+//    //method for R) Reports Screen
+//    public static void openReports() {
+//
+//        boolean viewingReports = true;
+//
+//        //while loop for viewing reports (all entries should show the newest entries first)
+//        while (viewingReports) {
+//
+//            //display Reports Screen Submenu options
+//            System.out.println("\n--- Reports Menu ---");
+//            System.out.println("1) Month To Date");
+//            System.out.println("2) Previous Month");
+//            System.out.println("3) Year To Date");
+//            System.out.println("4) Previous Year");
+//            System.out.println("5) Search by Vendor");
+//            System.out.println("0) Back");
+//            System.out.print("Choose a report option: ");
+//            String choice = ledgerScanner.nextLine().trim();
+//
+//            LocalDate today = LocalDate.now();
+//
+////            //sort transactions from newest to oldest
+////            Collections.reverse(allTransactions);
+//
+//            //switch statement for the Reports Screen based off what the user chooses
+//            switch (choice) {
+//                case "1":
+//
+//                    //fake user friendly header row
+//                    System.out.println("\nDate         | Time     | Description          | Vendor          |     Amount");
+//                    System.out.println("-------------|----------|----------------------|-----------------|------------");
+//
+//                    //display transactions from this month
+//                    for (Transaction t : readFromCSV()) {
+//                        if (t.getDate().getMonth() == today.getMonth() &&
+//                                t.getDate().getYear() == today.getYear()) {
+//                            displayTransaction(t);
+//                        }
+//                    }
+//                    break;
+//                case "2":
+//
+//                    //fake user friendly header row
+//                    System.out.println("\nDate         | Time     | Description          | Vendor          |     Amount");
+//                    System.out.println("-------------|----------|----------------------|-----------------|------------");
+//
+//                    //display transactions from last month
+//                    LocalDate lastMonth = today.minusMonths(1);
+//
+//                    for (Transaction t : readFromCSV()) {
+//                        if (t.getDate().getMonth() == lastMonth.getMonth() &&
+//                                t.getDate().getYear() == lastMonth.getYear()) {
+//                            displayTransaction(t);
+//                        }
+//                    }
+//                    break;
+//                case "3":
+//
+//                    //fake user friendly header row
+//                    System.out.println("\nDate         | Time     | Description          | Vendor          |     Amount");
+//                    System.out.println("-------------|----------|----------------------|-----------------|------------");
+//
+//                    //display transactions from this year
+//                    for (Transaction t : readFromCSV()) {
+//                        if (t.getDate().getYear() == today.getYear()) {
+//                            displayTransaction(t);
+//                        }
+//                    }
+//                    break;
+//                case "4":
+//
+//                    //fake user friendly header row
+//                    System.out.println("\nDate         | Time     | Description          | Vendor          |     Amount");
+//                    System.out.println("-------------|----------|----------------------|-----------------|------------");
+//
+//                    //display transactions from last year
+//                    LocalDate lastYear = today.minusYears(1);
+//
+//                    for (Transaction t : readFromCSV()) {
+//                        if (t.getDate().getYear() == lastYear.getYear()) {
+//                            displayTransaction(t);
+//                        }
+//                    }
+//                    break;
+//                case "5":
+//
+//                    //fake user friendly header row
+//                    System.out.println("\nDate         | Time     | Description          | Vendor          |     Amount");
+//                    System.out.println("-------------|----------|----------------------|-----------------|------------");
+//
+//                    //prompt user for the vendor name and display all entries for that vendor
+//                    System.out.print("Enter vendor name: ");
+//                    String vendorSearch = ledgerScanner.nextLine().trim();
+//
+//                    for (Transaction t : readFromCSV()) {
+//                        if (t.getVendor().equalsIgnoreCase(vendorSearch)) {
+//                            displayTransaction(t);
+//                        }
+//                    }
+//                    break;
+//                case "0":
+//                    //go back to Ledger Screen
+//                    viewingReports = false;
+//                    break;
+//
+//                default:
+//                    System.out.println("Invalid selection");
+//            }
+//        }
+//    }
+//}
 //}
