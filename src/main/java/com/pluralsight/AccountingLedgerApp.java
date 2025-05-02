@@ -367,14 +367,14 @@ public class AccountingLedgerApp {
 
     //method to display transactions with special formatting, so it doesn't print out weird
     public static void displayTransaction(Transaction t) {
-        System.out.printf("%-12s | %-8s | %-20s | %-15s | %10.2f\n",
+        System.out.printf("%-12s | %-8s | %-20s | %-17s | %10.2f\n",
                 t.getDate(), t.getTime(), t.getDescription(), t.getVendor(), t.getAmount());
     }
 
     //method for fake user friendly header row
     public static void formatHeader() {
-        System.out.println("\nDate         | Time     | Description          | Vendor          |     Amount");
-        System.out.println("-------------|----------|----------------------|-----------------|------------");
+        System.out.println("\nDate         | Time     | Description          | Vendor            |     Amount");
+        System.out.println("-------------|----------|----------------------|-------------------|------------");
     }
 
     //method for R) Reports Screen
