@@ -37,7 +37,7 @@ public class AccountingLedgerApp {
             }
 
             //display Home Screen options
-            System.out.println("--- Welcome to the Home Screen ---");
+            System.out.println("\n=========== \uD83C\uDFE6 Welcome to the Home Screen ===========");
             System.out.println("D) Add Deposit");
             System.out.println("P) Make Payment (Debit)");
             System.out.println("L) Ledger");
@@ -297,9 +297,9 @@ public class AccountingLedgerApp {
             //switch statement for the Ledger Screen based off what the user chooses
             switch (userChoice.toUpperCase()) {
                 case "A":
+                    System.out.println("\n=========== \uD83D\uDCB8 All Transactions ===========");
                     //fake user friendly header row
-                    System.out.println("\nDate         | Time     | Description          | Vendor          |     Amount");
-                    System.out.println("-------------|----------|----------------------|-----------------|------------");
+                    formatHeader();
 
                     //display all entries
                     for (Transaction t : allTransactions) {
@@ -307,9 +307,9 @@ public class AccountingLedgerApp {
                     }
                     break;
                 case "D":
+                    System.out.println("\n=========== \uD83D\uDCB8 Deposit Transactions ===========");
                     //fake user friendly header row
-                    System.out.println("\nDate         | Time     | Description          | Vendor          |     Amount");
-                    System.out.println("-------------|----------|----------------------|-----------------|------------");
+                    formatHeader();
 
                     //display only the entries that are deposits into the account
                     for (Transaction t : allTransactions) {
@@ -319,9 +319,9 @@ public class AccountingLedgerApp {
                     }
                     break;
                 case "P":
+                    System.out.println("\n=========== \uD83D\uDCB8 Payment Transactions ===========");
                     //fake user friendly header row
-                    System.out.println("\nDate         | Time     | Description          | Vendor          |     Amount");
-                    System.out.println("-------------|----------|----------------------|-----------------|------------");
+                    formatHeader();
 
                     //display only the negative entries/payments
                     for (Transaction t : allTransactions) {
@@ -351,6 +351,12 @@ public class AccountingLedgerApp {
                 t.getDate(), t.getTime(), t.getDescription(), t.getVendor(), t.getAmount());
     }
 
+    //method for fake user friendly header row
+    public static void formatHeader() {
+        System.out.println("\nDate         | Time     | Description          | Vendor          |     Amount");
+        System.out.println("-------------|----------|----------------------|-----------------|------------");
+    }
+
     //method for R) Reports Screen
     public static void openReports() {
 
@@ -360,7 +366,10 @@ public class AccountingLedgerApp {
         while (viewingReports) {
 
             //display Reports Screen Submenu options
-            System.out.println("\n--- Reports Menu ---");
+//            System.out.println("\n--- Reports Menu ---");
+            System.out.println("\n=====================================");
+            System.out.println("     📊 Alondra's Ledger Reports 📊");
+            System.out.println("=====================================\n");
             System.out.println("1) Month To Date");
             System.out.println("2) Previous Month");
             System.out.println("3) Year To Date");
@@ -379,9 +388,9 @@ public class AccountingLedgerApp {
             switch (choice) {
                 case "1":
 
+                    System.out.println("\n=========== 📆 Month To Date Report ===========");
                     //fake user friendly header row
-                    System.out.println("\nDate         | Time     | Description          | Vendor          |     Amount");
-                    System.out.println("-------------|----------|----------------------|-----------------|------------");
+                    formatHeader();
 
                     //display transactions from this month
                     for (Transaction t : readFromCSV()) {
@@ -392,10 +401,9 @@ public class AccountingLedgerApp {
                     }
                     break;
                 case "2":
-
+                    System.out.println("\n=========== 📆 Previous Month Report ===========");
                     //fake user friendly header row
-                    System.out.println("\nDate         | Time     | Description          | Vendor          |     Amount");
-                    System.out.println("-------------|----------|----------------------|-----------------|------------");
+                    formatHeader();
 
                     //display transactions from last month
                     LocalDate lastMonth = today.minusMonths(1);
@@ -409,9 +417,9 @@ public class AccountingLedgerApp {
                     break;
                 case "3":
 
+                    System.out.println("\n=========== 📅 Year To Date Report ===========");
                     //fake user friendly header row
-                    System.out.println("\nDate         | Time     | Description          | Vendor          |     Amount");
-                    System.out.println("-------------|----------|----------------------|-----------------|------------");
+                    formatHeader();
 
                     //display transactions from this year
                     for (Transaction t : readFromCSV()) {
@@ -422,9 +430,9 @@ public class AccountingLedgerApp {
                     break;
                 case "4":
 
+                    System.out.println("\n=========== 🗓️ Previous Year Report ===========");
                     //fake user friendly header row
-                    System.out.println("\nDate         | Time     | Description          | Vendor          |     Amount");
-                    System.out.println("-------------|----------|----------------------|-----------------|------------");
+                    formatHeader();
 
                     //display transactions from last year
                     LocalDate lastYear = today.minusYears(1);
@@ -441,10 +449,9 @@ public class AccountingLedgerApp {
                     System.out.print("Enter vendor name: ");
                     String vendorSearch = ledgerScanner.nextLine().trim();
 
+                    System.out.println("\n=========== 🧾 Transactions for Vendor: " + vendorSearch + " ===========");
                     //fake user friendly header row
-                    System.out.println("\nDate         | Time     | Description          | Vendor          |     Amount");
-                    System.out.println("-------------|----------|----------------------|-----------------|------------");
-
+                    formatHeader();
 
                     for (Transaction t : readFromCSV()) {
                         if (t.getVendor().equalsIgnoreCase(vendorSearch)) {
